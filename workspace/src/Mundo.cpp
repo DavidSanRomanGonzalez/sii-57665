@@ -156,6 +156,9 @@ void CMundo::OnTimer(int value)
 		sprintf(msg, "Jugador 1 marca 1 punto, lleva un total de %d puntos.", puntos1);
 		write(fd_logger, msg, strlen(msg) + 1);
 	}
+	
+	if (puntos1 >= 3 || puntos2 >=3)
+	    exit(0);
 
 }
 

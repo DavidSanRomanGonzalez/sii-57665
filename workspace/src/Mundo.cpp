@@ -10,6 +10,9 @@
 #include <string.h>
 #include <math.h>
 
+#include <fcntl.h>
+#include <unistd.h>
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -21,7 +24,7 @@ CMundo::CMundo()
 
 CMundo::~CMundo()
 {
-
+    close(fd_logger);
 }
 
 void CMundo::InitGL()
@@ -135,6 +138,10 @@ void CMundo::OnTimer(int value)
 		esfera.velocidad.x=2+2*rand()/(float)RAND_MAX;
 		esfera.velocidad.y=2+2*rand()/(float)RAND_MAX;
 		puntos2++;
+
+		char msg[100];
+		sprintf(msg, "Jugador 2 marca 1 punto, lleva un total de %d puntos.", puntos2);
+		write(fd_logger, msg, strlen(msg) + 1);
 	}
 
 	if(fondo_dcho.Rebota(esfera))
@@ -144,6 +151,10 @@ void CMundo::OnTimer(int value)
 		esfera.velocidad.x=-2-2*rand()/(float)RAND_MAX;
 		esfera.velocidad.y=-2-2*rand()/(float)RAND_MAX;
 		puntos1++;
+	
+		char msg[100];
+		sprintf(msg, "Jugador 1 marca 1 punto, lleva un total de %d puntos.", puntos1);
+		write(fd_logger, msg, strlen(msg) + 1);
 	}
 
 }
@@ -164,6 +175,11 @@ void CMundo::OnKeyboardDown(unsigned char key, int x, int y)
 
 void CMundo::Init()
 {
+        puntos1 = 0;
+	puntos2 = 0;
+	fd_logger = open("/tmp/FIFO_LOGGER", O_WRONLY);
+	if (fd_logger < 0) perror("No puede abrirse el FIFO del logger");
+
 	Plano p;
 //pared inferior
 	p.x1=-7;p.y1=-5;

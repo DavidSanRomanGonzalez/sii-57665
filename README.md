@@ -29,3 +29,18 @@ Para ejecutarlo hay que lanzar primero el logger y después el juego, en dos ter
 
     ./logger
     ./tenis
+
+
+## Práctica tres: Comunicación mediante archivo proyectado en memoria
+
+Se añade un nuevo programa en donde hay un bot que controla automáticamente la raqueta del jugador 1:
+
+- El juego crea un fichero proyectado en memoria con mmap, que tendrá la posición de la pelota, la de la raqueta y la acción a realizar.
+- El bot abre ese mismo fichero, compara la posición de la pelota con la de la raqueta y decide si subir, bajar o no hacer nada.
+- El juego lee la acción del bot en cada instante y mueve la raqueta.
+
+Para ejecutarlo hay que lanzar en este orden, en tres terminales:
+
+    ./logger
+    ./tenis
+    ./bot
